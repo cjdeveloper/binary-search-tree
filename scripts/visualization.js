@@ -114,12 +114,12 @@ function drawLines(tree, svgContainer) {
 		var left_ypos;
 		var right_xpos;
 		var right_ypos;
+		var	line = svgContainer.append("line");
 
 		if (leftChild !== null) {
 			left_xpos = leftChild.cx;
 			left_ypos = leftChild.cy;
-
-			var line = svgContainer.append("line")
+			line
 	        .attr("x1", parent_x)
 	        .attr("y1", parent_y)
 	        .attr("x2", left_xpos)
@@ -132,53 +132,116 @@ function drawLines(tree, svgContainer) {
 			right_xpos = rightChild.cx;
 			right_ypos = rightChild.cy;
 
-			var line = svgContainer.append("line")
+			line  
             .attr("x1", parent_x)
             .attr("y1", parent_y)
             .attr("x2", right_xpos)
             .attr("y2", right_ypos)
             .attr("stroke-width", 2)
             .attr("stroke", "black");
-		} 			
-    });        
+		} 		
+    }); // end traverse       
 }
 
-/*Tests*/
+function drawNodes(tree, svgContainer) {
+	tree.traverse(function(node){
+		var x_coord = node.cx;
+		var y_coord = node.cy;
+		var radius = node.r;
+		var value = node.value;
+		var node = svgContainer.append("circle")
+			.attr("cx",  node.cx)
+	        .attr("cy", node.cy)
+	        .attr("r", radius)
+	        .data([value])
+	        .style("fill", "red")
+	        .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+	        .on("mouseout", function(){d3.select(this).style("fill", "red");})
+	        .on("click", function(){
+        	var deleteItem = d3.select(this).datum();
+        	tree.remove(deleteItem);
 
-$(document).ready(function() {
+        	svgContainer.selectAll("circle").remove();
+        	svgContainer.selectAll("line").remove();
+        	svgContainer.selectAll("text").remove();
 
-	var tree = new BinarySearchTree();
-	tree.add(50);
-	tree.add(40);
-	tree.add(80);
-	tree.add(30);
-	tree.add(45);
-	tree.add(60);
-	tree.add(85);
-	tree.add(55);
-	tree.add(52);
-	tree.add(28);
-	tree.add(48);
-	tree.add(46);
-	tree.add(49);
-	tree.add(41);
-	tree.add(31);
-	tree.add(51);
-	tree.computeNodePositions();
-	console.log(tree.toArray());
-	console.log(getNodeData(tree));
-	var jsonNodes = convertToJSON(scaleCoordinates(getNodeData(tree)));
 
-	// create the SVG coordinate space
-	var svgContainer = d3.select("body").append("svg")
-        .attr("width", 1000)
-        .attr("height", 1000)
-        .style("border", "1px solid black");
+			tree.computeNodePositions();
+			jsonNodes = convertToJSON(scaleCoordinates(getNodeData(tree)));
+			
+			drawLines(tree, svgContainer);
+			drawNodes(tree, svgContainer);
+			drawTextLabels(tree, svgContainer);
+		}); // end click
+    }); // end traverse
+}
 
-    //draw lines first
-	drawLines(tree, svgContainer);
- 
-   	//add SVG circles to the svgContainer and bind data to circles
+function drawTextLabels(tree, svgContainer) {
+	tree.traverse(function(node) {
+		var text = svgContainer.append("text");
+
+	//add SVG Text Element attributes
+	var textLabels = text
+       	.attr("x",  node.cx)
+        .attr("y", node.cy)
+        .text( node.value)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "20px")
+        .attr("text-anchor", "middle")
+        .attr("fill", "blue");
+	});
+}
+
+/*Draws lines connecting a parent node with its children
+tree: a BST
+svgContainer: the SVG coordinate space
+*/
+
+function drawLines2(tree, svgContainer) {
+	tree.traverse(function(node){
+		var parent_x = node.cx;
+		var parent_y = node.cy;
+		var leftChild = node.left;
+		var rightChild = node.right;
+		var left_xpos;
+		var left_ypos;
+		var right_xpos;
+		var right_ypos;
+
+		if (leftChild !== null) {
+			left_xpos = leftChild.cx;
+			left_ypos = leftChild.cy;
+			line = svgContainer.append("line")
+	        .attr("x1", parent_x)
+	        .attr("y1", parent_y)
+	        .attr("x2", left_xpos)
+	        .attr("y2", left_ypos)
+	        .attr("stroke-width", 2)
+	        .attr("stroke", "black");
+		}
+
+		if (rightChild !== null) {
+			right_xpos = rightChild.cx;
+			right_ypos = rightChild.cy;
+			line = svgContainer.append("line")  
+            .attr("x1", parent_x)
+            .attr("y1", parent_y)
+            .attr("x2", right_xpos)
+            .attr("y2", right_ypos)
+            .attr("stroke-width", 2)
+            .attr("stroke", "black");
+		} 		
+    }); // end traverse       
+}
+
+/*Draws the nodes of the BST
+tree: a BST
+svgContainer: the SVG coordinates space
+jsonNodes: an array of nodes in JSON format
+*/
+
+function drawNodes2(tree, svgContainer, jsonNodes) {
+	//add SVG circles to the svgContainer and bind data to circles
 	var circles = svgContainer.selectAll("circle")
        	.data(jsonNodes)
     	.enter()
@@ -189,8 +252,36 @@ $(document).ready(function() {
         .attr("cx", function (d) { return d.xpos; })
         .attr("cy", function (d) { return d.ypos; })
         .attr("r", function (d) { return d.radius; })
-        .style("fill", function(d) { return d.color; });
+        .style("fill", function(d) { return d.color; })
+        .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+        .on("mouseout", function(){d3.select(this).style("fill", "red");})
+        // click event for deleting a node
+        .on("click", function(){
+        	var deleteItem = d3.select(this).datum().value;
+        	tree.remove(deleteItem);
 
+        	//clear the screen
+        	svgContainer.selectAll("circle").remove();
+        	svgContainer.selectAll("line").remove();
+        	svgContainer.selectAll("text").remove();
+
+        	//recompute and scale node coordinates, put in JSON format for use by 
+        	//drawNodes and drawTextLabels
+			tree.computeNodePositions();
+	        jsonNodes = convertToJSON(scaleCoordinates(getNodeData(tree)));
+
+			drawLines2(tree, svgContainer);
+			drawNodes2(tree, svgContainer, jsonNodes);
+			drawTextLabels2(svgContainer, jsonNodes);
+        });
+}
+
+/*Draws the labels for the tree nodes
+svgContainer: the SVG coordinate space
+jsonNodes: an array of nodes in JSON format
+*/
+
+function drawTextLabels2(svgContainer, jsonNodes) {
    	//add the SVG Text Element to the svgContainer
 	var text = svgContainer.selectAll("text")
         .data(jsonNodes)
@@ -206,8 +297,4 @@ $(document).ready(function() {
         .attr("font-size", "20px")
         .attr("text-anchor", "middle")
         .attr("fill", "blue");
-
-    tree.remove(80);
-    console.log(tree.toArray());
-
-}); // end ready
+}
