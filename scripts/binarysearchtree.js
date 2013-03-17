@@ -1,4 +1,4 @@
-/*
+ /*
 * Binary Search Tree implementation in JavaScript
 * Copyright (c) 2009 Nicholas C. Zakas
 *
@@ -268,19 +268,27 @@ BinarySearchTree.prototype = {
                         //reset pointers for new traversal
                         replacement = current.left;
                         replacementParent = current;
+
+                        // if already on the rightmost node skip to the else statement
+                        if (replacement.right !== null) {
                         
-                        //find the right-most node
-                        while(replacement.right !== null){
-                            replacementParent = replacement;
-                            replacement = replacement.right;
+                            //find the right-most node
+                            while(replacement.right !== null){
+                                replacementParent = replacement;
+                                replacement = replacement.right;
+                            }
+                        
+                            replacementParent.right = replacement.left;
+                            
+                            //assign children to the replacement
+                            replacement.right = current.right;
+                            replacement.left = current.left;
                         }
-                    
-                        replacementParent.right = replacement.left;
-                        
-                        //assign children to the replacement
-                        replacement.right = current.right;
-                        replacement.left = current.left;
-                        
+
+                        else {
+                            replacement.right = current.right;
+                        }
+
                         //place the replacement in the right spot
                         if (current.value < parent.value){
                             parent.left = replacement;
@@ -350,7 +358,7 @@ BinarySearchTree.prototype = {
         
         //helper function
         function inOrder(node){
-            if (node){
+            if (node !== null){
                 
                 //traverse the left subtree
                 if (node.left !== null){
@@ -381,9 +389,9 @@ BinarySearchTree.prototype = {
         //helper function to traverse the tree, compute the x,y positions of each node,
         //and store it in the node
 
-        function inorderTraversal(node, depth) { 
+        function inorderTraversal(node, depth) {
             if (node !== null) {
-                inorderTraversal(node.left, depth + 1); //add 1 to depth (y coordinate) 
+                inorderTraversal(node.left, depth + 1); //add 1 to depth (y coordinate)
                 node.cx = totalNodes++; //x coord is node number in inorder traversal
                 node.cy = depth; // mark y coord as depth
                 inorderTraversal(node.right, depth + 1);
@@ -393,5 +401,3 @@ BinarySearchTree.prototype = {
         inorderTraversal(this._root, depth);
     }
 };
-
-    
