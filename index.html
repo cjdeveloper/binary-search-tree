@@ -7,14 +7,19 @@
         <!-- css files -->
         <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
         <!-- <link href="css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" /> -->
+        <link rel="stylesheet" href="css/tipsy.css" type="text/css" />
         <link href="css/style.css" type="text/css" rel="stylesheet" />
 
         <!-- scripts -->
         <script src="scripts/jquery-1.9.1.min.js"></script>
-        <script src="scripts/test.js"></script>
+        <script src="scripts/driver.js"></script>
         <script src="scripts/binarysearchtree.js"></script>
         <script src="scripts/visualization.js"></script>
         <script src="scripts/d3.min.js"></script>
+
+        <!-- tipsy used for creating tooltips on the animated nodes -->
+        <script type='text/javascript' src='scripts/tipsy.js'></script>
+        
     </head>
     <body>
         <div class="row">
@@ -23,8 +28,12 @@
             </div>
         <div class="span2">
             <div class="input-append">
-                <input id="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
+                <input id="addInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
                 <button id="addNode" class="btn btn-primary" type="button" >Add node!</button>
+            </div>
+            <div class="input-append">
+                <input id="animatedAddInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
+                <button id="animatedAdd" class="btn btn-primary" type="button" >Animated add!</button>
             </div>
        </div>
     </body>
