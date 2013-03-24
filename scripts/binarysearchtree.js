@@ -142,6 +142,31 @@ BinarySearchTree.prototype = {
         return found;
 
     },
+
+    getNode: function(value){
+        var found = false,
+            current = this._root
+            
+        //make sure there's a node to search
+        while(!found && current){
+        
+            //if the value is less than the current node's, go left
+            if (value < current.value){
+                current = current.left;
+                
+            //if the value is greater than the current node's, go right
+            } else if (value > current.value){
+                current = current.right;
+                
+            //values are equal, found it!
+            } else {
+                found = true;
+            }
+        }
+        
+        //only proceed if the node was found
+        return current;
+    },
     
     /**
 * Removes the node with the given value from the tree. This may require
@@ -383,4 +408,28 @@ BinarySearchTree.prototype = {
         //start with the root
         inOrder(this._root);
     },
+
+/*Performs a breadth-first traversal of the tree
+process: the function to run on each node
+*/
+
+    levelTraversal: function(process) {
+        var node;
+        var breadth_first = [];
+
+        breadth_first.push(this._root);
+       
+        while(breadth_first.length !== 0) {
+            node = breadth_first.shift();
+
+            process.call(this, node);
+
+            if(node.left !== null) {
+                breadth_first.push(node.left);
+            }
+            if(node.right !== null) {
+                breadth_first.push(node.right);
+            }
+        }
+    }
 };
