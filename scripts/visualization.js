@@ -208,8 +208,8 @@ function drawLines(tree, svgContainer) {
     }); // end traverse
 }
 
-/*Helper function used in drawAnimatedNode that sets up the click event for the animated
-node
+/*Helper function used in drawAnimatedNode that sets up the delete click event for the 
+animated node
 tree: a BST
 svgContainer: the SVG coordinate space
 animatedCircle: the SVG element representing the animated node
@@ -331,11 +331,13 @@ function drawAnimatedNode(tree, svgContainer, animatedNode, xpos, ypos) {
 
 
                 if(value < current.value) {
-                    return  "Go left since " + value + " is less than " + current.value; 
+                    return value + " is less than " + current.value + 
+                    ". Click me to move me to my correct spot."; 
                 }
 
                 else if(value > current.value) {
-                    return  "Go right since " + value + " is greater than " + current.value; 
+                    return value + " is greater than " + current.value + 
+                    ". Click me to move me to my correct spot."; 
                 }
 
                 else {

@@ -3,6 +3,9 @@ to setting up the click events on the buttons*/
 
 $(document).ready(function() {
 
+     // hide delete alert when page is loaded
+     $("#deleteAlert").hide();
+
     // create the SVG coordinate space
     var svgContainer = d3.select("#svgContainer").append("svg")
         .attr("width", 1000)
@@ -59,5 +62,21 @@ $(document).ready(function() {
         drawTextLabels(svgContainer, jsonNodes);
         drawAnimatedNode(tree, svgContainer, animatedNode, 200, tree._root.cy)
     });// end click
+
+    $("#delete").click(function(){
+        $("#deleteAlert").show();
+    });// end click
+
+    $("#deleteConfirm").click(function(){
+        tree._root = null;
+        svgContainer.selectAll("circle").remove();
+        svgContainer.selectAll("line").remove();
+        svgContainer.selectAll("text").remove();
+        $("#deleteAlert").hide();
+    }); // end click
+
+    $("#closeAlert").click(function(){
+        $("#deleteAlert").hide();
+    }); // end click
 
 });// end ready       
