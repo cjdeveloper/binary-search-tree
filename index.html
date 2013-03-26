@@ -26,32 +26,33 @@
             <div id="svgContainer" class="span14">
                 <h2>Binary Search Tree Visualization</h2>
             </div>
-        <div class="span4">
-            <div class="input-append">
-                <input id="addInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
-                <button id="addNode" class="btn btn-primary" type="button" >Add node!</button>
-            </div>
-            <div class="input-append">
-                <input id="animatedAddInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
-                <button id="animatedAdd" class="btn btn-primary" type="button" >Animated add!</button>
-            </div>
+            <div class="span4">
+                <div class="input-append">
+                    <input id="addInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
+                    <button id="addNode" class="btn btn-primary" type="button" >Add node!</button>
+                </div>
+                <div class="input-append">
+                    <input id="animatedAddInput" class="appendedInputButton" class="input-large" type="text" placeholder="Enter node value (ex. 20)">
+                    <button id="animatedAdd" class="btn btn-primary" type="button" >Animated add!</button>
+                </div>
 
-            <span class="help-block">Hover over the green node to find out where it should be placed.</span>
+                <span class="help-block">Hover over the green circle to find out where it should be placed.  <br>Click the green circle to move it into its proper spot in the tree.</span>
 
-            <!-- delete button -->
-            <div>
-                <button id="delete" class="btn btn-danger" type="button">Delete all nodes</button>
-            </div>
+                <!-- delete button -->
+                <div>
+                    <button id="delete" class="btn btn-danger" type="button">Delete all nodes</button>
+                </div>
 
-            <!-- delete alert -->
-            <div id="deleteAlert" class="alert alert-error fade in">
-                <button class="close" data-dismiss="alert" type="button"></button>
-                <h4 class="alert-heading">Wait!</h4>
-                <p>Are you sure you want to delete all the nodes?</p>
-                <p>
-                    <a id="deleteConfirm" class="btn btn-danger" href="#">Yes, delete them</a>
-                    <a id="closeAlert" class="btn" href="#">Cancel</a>
-                </p>
+                <!-- delete alert -->
+                <div id="deleteAlert" class="alert alert-error fade in">
+                    <button class="close" data-dismiss="alert" type="button"></button>
+                    <h4 class="alert-heading">Wait!</h4>
+                    <p>Are you sure you want to delete all the nodes?</p>
+                    <p>
+                        <a id="deleteConfirm" class="btn btn-danger" href="#">Yes, delete them</a>
+                        <a id="closeAlert" class="btn" href="#">Cancel</a>
+                    </p>
+                </div>
             </div>
     </body>
 </html>
